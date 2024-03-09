@@ -14,10 +14,6 @@ try:
 except Exception as e:
     print("Error:", e)
 
-# pipe = pickle.load(open('pipe.pkl', 'rb'))
-
-
-
 st.title("Laptop Predictor")
 
 # brand
@@ -30,7 +26,7 @@ Type = st.selectbox('Type',df['TypeName'].unique())
 ram = st.selectbox('Ram(in GB)',[2,4,6,8,12,16,24,32,64])
 
 # weight
-weight = st.number_input('weight of the laptop')
+weight = st.number_input('weight of the laptop',value=2.2)
 
 # touchscreen
 touchscreen = st.selectbox('Touchscreen',['No','Yes'])
@@ -39,7 +35,7 @@ touchscreen = st.selectbox('Touchscreen',['No','Yes'])
 ips = st.selectbox('IPS',['No','Yes'])
 
 # screen size
-screen_size = st.number_input('Screen Size')
+screen_size = st.number_input('Screen Size',value=15.6)
 
 # resolution
 resolution = st.selectbox('Screen Resolution',['1920x1080','1366x768','1600x900','3840x2160','3200x1800','2880x1800','2560x1440','2304x1440'])
@@ -67,12 +63,16 @@ if st.button('Predict Price'):
     else:
         ips = 0
 
-    X_res = int(resolution.split('x')[0])
-    Y_res = int(resolution.split('x')[1])
-    ppi = ((X_res ** 2) + (Y_res ** 2)) ** 0.5 / screen_size
-    query = np.array([company, Type, ram, weight, touchscreen, ips, ppi, cpu, hdd, ssd, gpu, os])
+    if weight and screen_size:
+        ppi = None
+        X_res = int(resolution.split('x')[0])
+        Y_res = int(resolution.split('x')[1])
+        ppi = ((X_res ** 2) + (Y_res ** 2)) ** 0.5 / screen_size
 
-    query = query.reshape(1, 12)
-    st.title("The predicted price of this configuration is " + str(int(np.exp(pipe.predict(query)[0]))))
+        query = np.array([company, Type, ram, weight, touchscreen, ips, ppi, cpu, hdd, ssd, gpu, os])
+        query = query.reshape(1, 12)
+        st.title("The predicted price of this configuration is " + str(int(np.exp(pipe.predict(query)[0]))))
+    else:
+        st.title("please fill all required fields")
 
 
