@@ -45,7 +45,7 @@ cpu = st.selectbox('CPU',df['Cpu brand'].unique())
 
 hdd = st.selectbox('HDD(in GB)',[0,128,256,512,1024,2048])
 
-ssd = st.selectbox('SSD(in GB)',[0,8,128,256,512,1024])
+ssd = st.selectbox('SSD(in GB)',[512,8,128,256,0,1024])
 
 gpu = st.selectbox('GPU',df['Gpu brand'].unique())
 
